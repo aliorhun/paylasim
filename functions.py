@@ -147,7 +147,7 @@ def UserAndGroupPermissionsWindows(path):
 def shareFile(password, sharingName, path):
 
     if isShared(path)==True:
-        command='echo ' + password + ' | sudo -S sh -c \'sed -i "s/{0}/{1}/g" /etc/samba/smb.conf \''.format(getShareName(path), sharingName)
+        command='echo ' + password + ' | sudo -S sh -c \'sed -i "s/[{0}$]/[{1}$]/g" /etc/samba/smb.conf \''.format(getShareName(path), sharingName)
     else:
         written="""[{0}$]\ncomment = {1}\npath = {2} \nbrowseable = yes\nguest ok = yes\nread only = yes\npublic = yes\nwritable = yes\n""".format(sharingName, sharingName, path)
         command = 'echo ' + password + ' | sudo -S sh -c \'echo """%s""">> /etc/samba/smb.conf\'' %written
@@ -159,8 +159,8 @@ def shareFile(password, sharingName, path):
         return True
 
 
-def startSamba():
-    command = "service smbd restart"
+def startSamba(password):
+    command = 'echo ' + password + ' | sudo -S sh -c \' systemctl restart smbd \' '
     proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
     (out, error) = proc.communicate()
     return out

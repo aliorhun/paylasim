@@ -813,7 +813,7 @@ class Ui_UserLogin(object):
             isShare=shareFile(self.password.text(), lineEditValue[0], fullpath)
 
             if(isShare == True):
-                startSamba()
+                startSamba(self.password.text())
             else:
                 self.msg = QMessageBox()
                 self.msg.setIcon(QMessageBox.Critical)
