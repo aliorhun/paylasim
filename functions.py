@@ -187,7 +187,7 @@ def getShareName(path):
     proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
     (out, error) = proc.communicate()
     if out:
-        return out
+        return str(out.decode('UTF-8'))
     else:
         return ""
 
