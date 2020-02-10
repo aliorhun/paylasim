@@ -733,9 +733,9 @@ class Ui_UserLogin(object):
         self.username = QtWidgets.QLabel(self.horizontalLayoutWidget_6)
         self.username.setObjectName("username")
         computer_name = str(getWhoAmI())
-        cn1 = computer_name.replace("b'", "")
+        #cn1 = computer_name.replace("b'", "")
         #cn2 = cn1[:-3]
-        self.username.setText(str(cn1))
+        self.username.setText(str(computer_name))
         self.HL2_2.addWidget(self.username)
         self.horizontalLayoutWidget_3 = QtWidgets.QWidget(UserLogin)
         self.horizontalLayoutWidget_3.setGeometry(QtCore.QRect(30, 260, 91, 21))

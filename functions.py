@@ -14,13 +14,13 @@ def getHostname():
     command = "hostname"
     proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
     (out, error) = proc.communicate()
-    return out
+    return str(out.decode('UTF-8'))
 
 def getWhoAmI():
     command = "whoami"
     proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE)
     (out, error) = proc.communicate()
-    return out
+    return str(out.decode('UTF-8'))
 
 
 # Get All Users and Groups with Permissions ------------------------------------------------------
@@ -146,9 +146,11 @@ def UserAndGroupPermissionsWindows(path):
 
 def shareFile(password, sharingName, path):
 
-    #written="""[ kartal $]\ncomment = kartal\npath = %s \nbrowseable = yes\nguest ok = yes\nread only = yes\npublic = yes\nwritable = yes """ % (path)
-    written="""[{0}$]\ncomment = {1}\npath = {2} \nbrowseable = yes\nguest ok = yes\nread only = yes\npublic = yes\nwritable = yes\n""".format(sharingName, sharingName, path)
-    command = 'echo ' + password + ' | sudo -S sh -c \'echo """%s""">> /etc/samba/smb.conf\'' %written
+    if isShared(path)==True:
+        command='echo ' + password + ' | sudo -S sh -c \'sed -i "s/{0}/{1}/g" /etc/samba/smb.conf \''.format(getShareName(path), sharingName)
+    else:
+        written="""[{0}$]\ncomment = {1}\npath = {2} \nbrowseable = yes\nguest ok = yes\nread only = yes\npublic = yes\nwritable = yes\n""".format(sharingName, sharingName, path)
+        command = 'echo ' + password + ' | sudo -S sh -c \'echo """%s""">> /etc/samba/smb.conf\'' %written
     proc = subprocess.Popen(command, shell=True, stdout=subprocess.PIPE,stderr=subprocess.PIPE)
     (out, error) = proc.communicate()
     if error:
