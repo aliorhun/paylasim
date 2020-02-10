@@ -814,6 +814,12 @@ class Ui_UserLogin(object):
 
             if(isShare == True):
                 startSamba(self.password.text())
+                self.msg = QMessageBox()
+                self.msg.setIcon(QMessageBox.Information)
+                self.msg.setText("Info")
+                self.msg.setInformativeText('Success')
+                self.msg.setWindowTitle("Info")
+                self.msg.exec_()
             else:
                 self.msg = QMessageBox()
                 self.msg.setIcon(QMessageBox.Critical)
@@ -821,7 +827,6 @@ class Ui_UserLogin(object):
                 self.msg.setInformativeText('Wrong Password')
                 self.msg.setWindowTitle("Info")
                 self.msg.exec_()
-                self.password.clear()
 
             self.password.clear()
 
